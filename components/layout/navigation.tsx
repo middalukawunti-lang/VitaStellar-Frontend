@@ -1,10 +1,22 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { motion } from "framer-motion"
-import { Menu, X, User, Settings, LogOut, Bell, Globe, Wifi, WifiOff, Star, Plus } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { useState } from "react";
+import { motion } from "framer-motion";
+import {
+  Menu,
+  X,
+  User,
+  Settings,
+  LogOut,
+  Bell,
+  Globe,
+  Wifi,
+  WifiOff,
+  Star,
+  Plus,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,22 +24,24 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Badge } from "@/components/ui/badge"
-import Link from "next/link"
+} from "@/components/ui/dropdown-menu";
+import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
+import Image from "next/image";
 
 export function Navigation() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [isOnline, setIsOnline] = useState(true)
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isOnline, setIsOnline] = useState(true);
 
   const navItems = [
     { href: "/", label: "Home" },
+
     { href: "/telemedicine", label: "Telemedicine" },
     { href: "/traditional-medicine", label: "Traditional Medicine" },
     { href: "/medical-records", label: "Medical Records" },
     { href: "/education", label: "Education" },
     { href: "/community", label: "Community" },
-  ]
+  ];
 
   return (
     <header className="bg-white/80 backdrop-blur-md border-b border-emerald-200 sticky top-0 z-50">
@@ -37,7 +51,11 @@ export function Navigation() {
           <Link href="/" className="flex items-center space-x-3">
             <motion.div
               animate={{ rotate: 360 }}
-              transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
+              transition={{
+                duration: 2,
+                repeat: Number.POSITIVE_INFINITY,
+                ease: "linear",
+              }}
               className="text-2xl"
             >
               🏥
@@ -46,7 +64,9 @@ export function Navigation() {
               <h1 className="text-xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
                 Stellar Uzima
               </h1>
-              <p className="text-xs text-emerald-600 hidden sm:block">Healthcare • Ubuntu • Innovation</p>
+              <p className="text-xs text-emerald-600 hidden sm:block">
+                Healthcare • Ubuntu • Innovation
+              </p>
             </div>
           </Link>
 
@@ -68,11 +88,19 @@ export function Navigation() {
             {/* Connection Status */}
             <div
               className={`hidden sm:flex items-center space-x-2 px-3 py-1 rounded-full ${
-                isOnline ? "bg-green-100 text-green-700" : "bg-orange-100 text-orange-700"
+                isOnline
+                  ? "bg-green-100 text-green-700"
+                  : "bg-orange-100 text-orange-700"
               }`}
             >
-              {isOnline ? <Wifi className="w-4 h-4" /> : <WifiOff className="w-4 h-4" />}
-              <span className="text-sm font-medium">{isOnline ? "Online" : "Offline"}</span>
+              {isOnline ? (
+                <Wifi className="w-4 h-4" />
+              ) : (
+                <WifiOff className="w-4 h-4" />
+              )}
+              <span className="text-sm font-medium">
+                {isOnline ? "Online" : "Offline"}
+              </span>
             </div>
 
             {/* Language Selector */}
@@ -104,7 +132,9 @@ export function Navigation() {
             {/* XLM Balance */}
             <div className="hidden sm:flex items-center space-x-2 bg-yellow-100 px-3 py-1 rounded-full">
               <Star className="w-4 h-4 text-yellow-600" />
-              <span className="text-sm font-medium text-yellow-700">2,847 XLM</span>
+              <span className="text-sm font-medium text-yellow-700">
+                2,847 XLM
+              </span>
             </div>
 
             {/* Create Button */}
@@ -118,9 +148,18 @@ export function Navigation() {
             {/* User Menu */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                <Button
+                  variant="ghost"
+                  className="relative h-8 w-8 rounded-full"
+                >
                   <Avatar className="h-8 w-8">
-                    <AvatarImage src="/placeholder.svg?height=32&width=32" alt="User" />
+                    <Image
+                      src="/placeholder.svg"
+                      alt="User"
+                      width={32}
+                      height={32}
+                      className="rounded-full"
+                    />
                     <AvatarFallback>DR</AvatarFallback>
                   </Avatar>
                 </Button>
@@ -128,8 +167,12 @@ export function Navigation() {
               <DropdownMenuContent className="w-56" align="end" forceMount>
                 <DropdownMenuLabel className="font-normal">
                   <div className="flex flex-col space-y-1">
-                    <p className="text-sm font-medium leading-none">Dr. Amina Hassan</p>
-                    <p className="text-xs leading-none text-muted-foreground">amina@stellaruzima.com</p>
+                    <p className="text-sm font-medium leading-none">
+                      Dr. Amina Hassan
+                    </p>
+                    <p className="text-xs leading-none text-muted-foreground">
+                      amina@stellaruzima.com
+                    </p>
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
@@ -150,8 +193,17 @@ export function Navigation() {
             </DropdownMenu>
 
             {/* Mobile Menu Button */}
-            <Button variant="ghost" size="sm" className="lg:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-              {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            <Button
+              variant="ghost"
+              size="sm"
+              className="lg:hidden"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+              {isMenuOpen ? (
+                <X className="w-5 h-5" />
+              ) : (
+                <Menu className="w-5 h-5" />
+              )}
             </Button>
           </div>
         </div>
@@ -178,7 +230,9 @@ export function Navigation() {
               <div className="flex items-center justify-between pt-4 border-t border-emerald-200">
                 <div className="flex items-center space-x-2 bg-yellow-100 px-3 py-1 rounded-full">
                   <Star className="w-4 h-4 text-yellow-600" />
-                  <span className="text-sm font-medium text-yellow-700">2,847 XLM</span>
+                  <span className="text-sm font-medium text-yellow-700">
+                    2,847 XLM
+                  </span>
                 </div>
                 <Link href="/create">
                   <Button className="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600">
@@ -192,5 +246,5 @@ export function Navigation() {
         )}
       </div>
     </header>
-  )
+  );
 }
