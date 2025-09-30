@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Heart,
   Stethoscope,
@@ -20,17 +20,29 @@ import {
   Video,
   Leaf,
   Shield,
-} from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import Link from "next/link"
-import { Navigation } from "@/components/layout/navigation"
-import { Footer } from "@/components/layout/footer"
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import Link from "next/link";
+import { Navigation } from "@/components/layout/navigation";
+import { Footer } from "@/components/layout/footer";
+import Image from "next/image";
 
-const healthEmojis = ["🏥", "💊", "🩺", "❤️", "🧬", "🦷", "👩‍⚕️", "👨‍⚕️", "🌿", "🔬"]
+const healthEmojis = [
+  "🏥",
+  "💊",
+  "🩺",
+  "❤️",
+  "🧬",
+  "🦷",
+  "👩‍⚕️",
+  "👨‍⚕️",
+  "🌿",
+  "🔬",
+];
 const trendingTopics = [
   "Mental Health Awareness",
   "Telemedicine Revolution",
@@ -40,7 +52,7 @@ const trendingTopics = [
   "Community Health",
   "Medical AI",
   "Patient Care Excellence",
-]
+];
 
 const healthSlang = [
   "This treatment is absolutely fire! 🔥",
@@ -50,12 +62,13 @@ const healthSlang = [
   "Periodt! Prevention is better than cure! 💅✨",
   "Ubuntu in healthcare - we heal together! 🤝",
   "Asante sana for this knowledge! 🙏",
-]
+];
 
 const featuredPosts = [
   {
     id: 1,
-    title: "Integrating Traditional Healing with Modern Medicine in Rural Kenya",
+    title:
+      "Integrating Traditional Healing with Modern Medicine in Rural Kenya",
     author: "Dr. Amina Hassan",
     specialty: "Integrative Medicine",
     content:
@@ -92,7 +105,8 @@ const featuredPosts = [
     title: "Community Health Workers: The Backbone of African Healthcare",
     author: "Mama Fatima Kone",
     specialty: "Community Health Leader",
-    content: "Sharing 20 years of experience training and supporting community health workers across Mali...",
+    content:
+      "Sharing 20 years of experience training and supporting community health workers across Mali...",
     likes: 156,
     shares: 28,
     comments: 43,
@@ -120,37 +134,37 @@ const featuredPosts = [
     region: "Southern Africa",
     language: "Zulu/English",
   },
-]
+];
 
 export default function HomePage() {
-  const [currentEmoji, setCurrentEmoji] = useState(0)
-  const [currentSlang, setCurrentSlang] = useState(0)
-  const [isOnline, setIsOnline] = useState(true)
-  const [posts, setPosts] = useState(featuredPosts)
+  const [currentEmoji, setCurrentEmoji] = useState(0);
+  const [currentSlang, setCurrentSlang] = useState(0);
+  const [isOnline, setIsOnline] = useState(true);
+  const [posts, setPosts] = useState(featuredPosts);
 
   useEffect(() => {
     const emojiInterval = setInterval(() => {
-      setCurrentEmoji((prev) => (prev + 1) % healthEmojis.length)
-    }, 2000)
+      setCurrentEmoji((prev) => (prev + 1) % healthEmojis.length);
+    }, 2000);
 
     const slangInterval = setInterval(() => {
-      setCurrentSlang((prev) => (prev + 1) % healthSlang.length)
-    }, 4000)
+      setCurrentSlang((prev) => (prev + 1) % healthSlang.length);
+    }, 4000);
 
     // Network status detection
-    const handleOnline = () => setIsOnline(true)
-    const handleOffline = () => setIsOnline(false)
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
 
-    window.addEventListener("online", handleOnline)
-    window.addEventListener("offline", handleOffline)
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
 
     return () => {
-      clearInterval(emojiInterval)
-      clearInterval(slangInterval)
-      window.removeEventListener("online", handleOnline)
-      window.removeEventListener("offline", handleOffline)
-    }
-  }, [])
+      clearInterval(emojiInterval);
+      clearInterval(slangInterval);
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
+    };
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50">
@@ -159,7 +173,11 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="py-16 px-4">
         <div className="container mx-auto text-center">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-8"
+          >
             <div className="text-8xl mb-4">
               <AnimatePresence mode="wait">
                 <motion.span
@@ -179,8 +197,10 @@ export default function HomePage() {
             </h2>
 
             <p className="text-xl text-gray-600 mb-6 max-w-4xl mx-auto">
-              Bridging traditional African healing wisdom with modern medicine through blockchain technology. Accessible
-              telemedicine, secure medical records, and community-driven healthcare that works even offline. 🌍
+              Bridging traditional African healing wisdom with modern medicine
+              through blockchain technology. Accessible telemedicine, secure
+              medical records, and community-driven healthcare that works even
+              offline. 🌍
             </p>
 
             <motion.div
@@ -196,12 +216,20 @@ export default function HomePage() {
             <div className="flex justify-center mb-8">
               <div
                 className={`flex items-center space-x-2 px-4 py-2 rounded-full ${
-                  isOnline ? "bg-green-100 text-green-700" : "bg-orange-100 text-orange-700"
+                  isOnline
+                    ? "bg-green-100 text-green-700"
+                    : "bg-orange-100 text-orange-700"
                 }`}
               >
-                {isOnline ? <Wifi className="w-5 h-5" /> : <WifiOff className="w-5 h-5" />}
+                {isOnline ? (
+                  <Wifi className="w-5 h-5" />
+                ) : (
+                  <WifiOff className="w-5 h-5" />
+                )}
                 <span className="font-medium">
-                  {isOnline ? "Online - Full Features Available" : "Offline Mode - Core Features Active"}
+                  {isOnline
+                    ? "Online - Full Features Available"
+                    : "Offline Mode - Core Features Active"}
                 </span>
               </div>
             </div>
@@ -251,8 +279,12 @@ export default function HomePage() {
                       <action.icon
                         className={`w-12 h-12 mx-auto mb-3 text-${action.color}-500 group-hover:scale-110 transition-transform`}
                       />
-                      <h3 className="font-semibold text-gray-800 mb-1">{action.label}</h3>
-                      <p className="text-sm text-gray-600">{action.description}</p>
+                      <h3 className="font-semibold text-gray-800 mb-1">
+                        {action.label}
+                      </h3>
+                      <p className="text-sm text-gray-600">
+                        {action.description}
+                      </p>
                     </CardContent>
                   </Card>
                 </Link>
@@ -263,10 +295,30 @@ export default function HomePage() {
           {/* Stats */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
             {[
-              { icon: Users, label: "Healthcare Professionals", value: "12,847", color: "emerald" },
-              { icon: Heart, label: "Patient Stories", value: "8,923", color: "rose" },
-              { icon: Stethoscope, label: "Medical Articles", value: "15,672", color: "blue" },
-              { icon: TrendingUp, label: "XLM Distributed", value: "284,592", color: "yellow" },
+              {
+                icon: Users,
+                label: "Healthcare Professionals",
+                value: "12,847",
+                color: "emerald",
+              },
+              {
+                icon: Heart,
+                label: "Patient Stories",
+                value: "8,923",
+                color: "rose",
+              },
+              {
+                icon: Stethoscope,
+                label: "Medical Articles",
+                value: "15,672",
+                color: "blue",
+              },
+              {
+                icon: TrendingUp,
+                label: "XLM Distributed",
+                value: "284,592",
+                color: "yellow",
+              },
             ].map((stat, index) => (
               <motion.div
                 key={index}
@@ -276,8 +328,12 @@ export default function HomePage() {
               >
                 <Card className="bg-white/60 backdrop-blur-sm border-0 shadow-lg">
                   <CardContent className="p-6 text-center">
-                    <stat.icon className={`w-8 h-8 mx-auto mb-2 text-${stat.color}-500`} />
-                    <div className="text-2xl font-bold text-gray-800">{stat.value}</div>
+                    <stat.icon
+                      className={`w-8 h-8 mx-auto mb-2 text-${stat.color}-500`}
+                    />
+                    <div className="text-2xl font-bold text-gray-800">
+                      {stat.value}
+                    </div>
                     <div className="text-sm text-gray-600">{stat.label}</div>
                   </CardContent>
                 </Card>
@@ -290,7 +346,9 @@ export default function HomePage() {
       {/* Trending Topics */}
       <section className="py-8 px-4 bg-white/40 backdrop-blur-sm">
         <div className="container mx-auto">
-          <h3 className="text-2xl font-bold text-center mb-6 text-emerald-700">🔥 Trending in African Healthcare</h3>
+          <h3 className="text-2xl font-bold text-center mb-6 text-emerald-700">
+            🔥 Trending in African Healthcare
+          </h3>
           <div className="flex flex-wrap justify-center gap-3">
             {trendingTopics.map((topic, index) => (
               <motion.div
@@ -344,7 +402,9 @@ export default function HomePage() {
       <section className="py-8 px-4">
         <div className="container mx-auto">
           <div className="flex items-center justify-between mb-8">
-            <h3 className="text-2xl font-bold text-emerald-700">Featured Health Stories</h3>
+            <h3 className="text-2xl font-bold text-emerald-700">
+              Featured Health Stories
+            </h3>
             <Link href="/create">
               <Button className="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600">
                 <Plus className="w-4 h-4 mr-2" />
@@ -366,7 +426,13 @@ export default function HomePage() {
                     <div className="flex items-start justify-between">
                       <div className="flex items-center space-x-3">
                         <Avatar>
-                          <AvatarImage src={post.avatar || "/placeholder.svg"} />
+                          <Image
+                            src={post.avatar || "/placeholder.svg"}
+                            alt={post.author}
+                            width={40}
+                            height={40}
+                            className="rounded-full"
+                          />
                           <AvatarFallback>
                             {post.author
                               .split(" ")
@@ -374,9 +440,14 @@ export default function HomePage() {
                               .join("")}
                           </AvatarFallback>
                         </Avatar>
+
                         <div>
-                          <h4 className="font-semibold text-gray-800">{post.author}</h4>
-                          <p className="text-sm text-emerald-600">{post.specialty}</p>
+                          <h4 className="font-semibold text-gray-800">
+                            {post.author}
+                          </h4>
+                          <p className="text-sm text-emerald-600">
+                            {post.specialty}
+                          </p>
                           <div className="flex items-center space-x-2 text-xs text-gray-500">
                             <span>{post.region}</span>
                             <span>•</span>
@@ -389,7 +460,9 @@ export default function HomePage() {
                       <div className="text-right">
                         <div className="flex items-center space-x-1 text-yellow-600">
                           <Star className="w-4 h-4" />
-                          <span className="font-semibold">{post.xlmEarned} XLM</span>
+                          <span className="font-semibold">
+                            {post.xlmEarned} XLM
+                          </span>
                         </div>
                         <p className="text-xs text-gray-500">earned</p>
                       </div>
@@ -397,12 +470,18 @@ export default function HomePage() {
                   </CardHeader>
 
                   <CardContent>
-                    <h3 className="text-xl font-bold mb-3 text-gray-800">{post.title}</h3>
+                    <h3 className="text-xl font-bold mb-3 text-gray-800">
+                      {post.title}
+                    </h3>
                     <p className="text-gray-600 mb-4">{post.content}</p>
 
                     <div className="flex flex-wrap gap-2 mb-4">
                       {post.tags.map((tag, tagIndex) => (
-                        <Badge key={tagIndex} variant="outline" className="border-emerald-200 text-emerald-600">
+                        <Badge
+                          key={tagIndex}
+                          variant="outline"
+                          className="border-emerald-200 text-emerald-600"
+                        >
                           {tag}
                         </Badge>
                       ))}
@@ -425,7 +504,10 @@ export default function HomePage() {
                       </div>
 
                       <Link href={`/post/${post.id}`}>
-                        <Button variant="ghost" className="text-emerald-600 hover:text-emerald-700">
+                        <Button
+                          variant="ghost"
+                          className="text-emerald-600 hover:text-emerald-700"
+                        >
                           Read More
                         </Button>
                       </Link>
@@ -452,10 +534,13 @@ export default function HomePage() {
       {/* Community Features */}
       <section className="py-16 px-4 bg-gradient-to-r from-emerald-100 to-teal-100">
         <div className="container mx-auto text-center">
-          <h3 className="text-3xl font-bold mb-4 text-emerald-800">Ubuntu - We Heal Together</h3>
+          <h3 className="text-3xl font-bold mb-4 text-emerald-800">
+            Ubuntu - We Heal Together
+          </h3>
           <p className="text-lg text-emerald-700 mb-12 max-w-3xl mx-auto">
-            Join a community that believes in collective healing, where traditional wisdom meets modern innovation, and
-            where every voice matters in building healthier African communities.
+            Join a community that believes in collective healing, where
+            traditional wisdom meets modern innovation, and where every voice
+            matters in building healthier African communities.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -463,17 +548,20 @@ export default function HomePage() {
               {
                 icon: Shield,
                 title: "Cultural Respect",
-                description: "Honoring traditional healing practices while embracing modern medicine",
+                description:
+                  "Honoring traditional healing practices while embracing modern medicine",
               },
               {
                 icon: Globe,
                 title: "Offline-First",
-                description: "Healthcare that works even in areas with limited internet connectivity",
+                description:
+                  "Healthcare that works even in areas with limited internet connectivity",
               },
               {
                 icon: Users,
                 title: "Community Driven",
-                description: "Local expertise and community knowledge at the heart of healthcare",
+                description:
+                  "Local expertise and community knowledge at the heart of healthcare",
               },
             ].map((feature, index) => (
               <motion.div
@@ -486,7 +574,9 @@ export default function HomePage() {
                 <div className="w-16 h-16 bg-emerald-200 rounded-full flex items-center justify-center mx-auto mb-4">
                   <feature.icon className="w-8 h-8 text-emerald-600" />
                 </div>
-                <h4 className="text-xl font-semibold text-emerald-800 mb-2">{feature.title}</h4>
+                <h4 className="text-xl font-semibold text-emerald-800 mb-2">
+                  {feature.title}
+                </h4>
                 <p className="text-emerald-700">{feature.description}</p>
               </motion.div>
             ))}
@@ -496,5 +586,5 @@ export default function HomePage() {
 
       <Footer />
     </div>
-  )
+  );
 }
