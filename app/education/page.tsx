@@ -19,8 +19,9 @@ import {
   Lock,
   Wifi,
   WifiOff,
-  CloudDownload, // Added for download status
-  Trash2, // Added for removing download
+  CloudDownload,
+  Trash2,
+  FolderOpen, // New icon for Downloads
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -49,7 +50,7 @@ interface Course {
   price: number;
   isOfflineAvailable: boolean;
   progress?: number;
-  isDownloaded?: boolean; // New property for tracking download status
+  isDownloaded?: boolean;
   thumbnail: string;
   tags: string[];
   culturalContext: string;
@@ -64,7 +65,8 @@ interface Lesson {
   isLocked: boolean;
 }
 
-const courses: Course[] = [
+// NOTE: Hardcoded data for demonstration purposes
+const initialCourses: Course[] = [
   {
     id: "1",
     title: "Traditional African Medicine: Foundations and Modern Applications",
@@ -82,7 +84,7 @@ const courses: Course[] = [
     region: "East Africa",
     price: 0,
     isOfflineAvailable: true,
-    isDownloaded: true, // Example: This course is downloaded
+    isDownloaded: true, // Downloaded and 65% complete
     progress: 65,
     thumbnail: "/placeholder.svg?height=200&width=300",
     tags: ["Traditional Medicine", "Herbal Medicine", "Cultural Health"],
@@ -106,7 +108,7 @@ const courses: Course[] = [
     region: "West Africa",
     price: 0,
     isOfflineAvailable: true,
-    isDownloaded: false, // Example: Not yet downloaded
+    isDownloaded: false,
     progress: 0,
     thumbnail: "/placeholder.svg?height=200&width=300",
     tags: ["Community Health", "Primary Care", "Rural Health"],
@@ -130,7 +132,7 @@ const courses: Course[] = [
     region: "Southern Africa",
     price: 25,
     isOfflineAvailable: true,
-    isDownloaded: false,
+    isDownloaded: true, // Downloaded but 0% complete
     progress: 0,
     thumbnail: "/placeholder.svg?height=200&width=300",
     tags: ["Maternal Health", "Child Health", "Nutrition"],
@@ -213,9 +215,14 @@ export default function EducationPage() {
   const [selectedLevel, setSelectedLevel] = useState("all");
   const [isOnline, setIsOnline] = useState(true);
   const [activeTab, setActiveTab] = useState("courses");
-  const [myCourses, setMyCourses] = useState(courses); // Use state to manage course data for downloading/progress updates
+  const [myCourses, setMyCourses] = useState(initialCourses);
 
   useEffect(() => {
+    // Initial selection: select the first course in the initial list
+    if (initialCourses.length > 0) {
+      setSelectedCourse(initialCourses[0]);
+    }
+
     const handleOnline = () => setIsOnline(true);
     const handleOffline = () => setIsOnline(false);
 
@@ -290,6 +297,8 @@ export default function EducationPage() {
   const downloadedCourses = myCourses.filter(
     (course) => course.isDownloaded && course.isOfflineAvailable
   );
+  
+  const totalCourses = initialCourses.length;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-50">
@@ -331,7 +340,7 @@ export default function EducationPage() {
                 <span className="font-medium">
                   {isOnline
                     ? "Online - All Courses Available"
-                    : `Offline Mode - ${myCourses.filter((c) => c.isOfflineAvailable).length} Courses Available`}
+                    : `Offline Mode - ${downloadedCourses.length} Downloaded Courses`}
                 </span>
               </div>
             </div>
@@ -341,13 +350,14 @@ export default function EducationPage() {
 
       <div className="container mx-auto px-4 pb-12">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-3 max-w-md mx-auto mb-8">
-            <TabsTrigger value="courses">All Courses</TabsTrigger>
-            <TabsTrigger value="my-learning">My Learning</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-4 max-w-2xl mx-auto mb-8">
+            <TabsTrigger value="courses">All Courses ({totalCourses})</TabsTrigger>
+            <TabsTrigger value="my-learning">My Learning ({ongoingCourses.length})</TabsTrigger>
+            <TabsTrigger value="downloads">Downloads ({downloadedCourses.length})</TabsTrigger>
             <TabsTrigger value="certificates">Certificates</TabsTrigger>
           </TabsList>
 
-          {/* All Courses Tab */}
+          {/* 1. All Courses Tab */}
           <TabsContent value="courses">
             <div className="grid lg:grid-cols-3 gap-8">
               {/* Courses List */}
@@ -395,8 +405,7 @@ export default function EducationPage() {
                         <WifiOff className="w-5 h-5" />
                         <span className="font-medium">
                           Offline Mode: Showing only downloaded courses (
-                          {myCourses.filter((c) => c.isOfflineAvailable).length}{" "}
-                          available)
+                          {downloadedCourses.length} available)
                         </span>
                       </div>
                     </div>
@@ -749,134 +758,139 @@ export default function EducationPage() {
             </div>
           </TabsContent>
 
-          {/* My Learning Tab */}
+          {/* 2. My Learning Tab */}
           <TabsContent value="my-learning">
             <div className="max-w-4xl mx-auto">
-              {/* Ongoing Courses List */}
-              <div className="mb-8">
-                <h2 className="text-2xl font-bold text-gray-800 mb-2 flex items-center">
-                  <BookOpen className="w-6 h-6 mr-2 text-purple-600" />
-                  Courses in Progress
-                </h2>
-                <p className="text-gray-600 mb-4">
-                  Jump back into your active courses and continue learning.
-                </p>
+              <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                <BookOpen className="w-6 h-6 mr-2 text-purple-600" />
+                Courses in Progress ({ongoingCourses.length})
+              </h2>
+              <p className="text-gray-600 mb-6">
+                Jump back into your active courses and continue learning.
+              </p>
 
-                <div className="grid gap-6">
-                  {ongoingCourses.length > 0 ? (
-                    ongoingCourses.map((course, index) => (
-                      <motion.div
-                        key={course.id}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                      >
-                        <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-300">
-                          <CardContent className="p-4 flex items-center justify-between">
-                            <div className="flex-1">
-                              <h3 className="font-semibold text-gray-800 text-lg mb-1">
-                                {course.title}
-                              </h3>
-                              <p className="text-sm text-gray-600 mb-3">
-                                Taught by {course.instructor}
-                              </p>
+              <div className="grid gap-6">
+                {ongoingCourses.length > 0 ? (
+                  ongoingCourses.map((course, index) => (
+                    <motion.div
+                      key={course.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                    >
+                      <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-300">
+                        <CardContent className="p-4 flex items-center justify-between">
+                          <div className="flex-1">
+                            <h3 className="font-semibold text-gray-800 text-lg mb-1">
+                              {course.title}
+                            </h3>
+                            <p className="text-sm text-gray-600 mb-3">
+                              Taught by {course.instructor}
+                            </p>
 
-                              {/* Progress Bar */}
-                              <div className="flex items-center space-x-3">
-                                <Progress
-                                  value={course.progress}
-                                  className="h-2 w-3/4 bg-gray-200"
-                                />
-                                <span className="text-sm font-medium text-purple-600">
-                                  {course.progress}%
-                                </span>
-                              </div>
-                            </div>
-
-                            <Button className="bg-purple-500 hover:bg-purple-600 ml-4">
-                              Continue
-                            </Button>
-                          </CardContent>
-                        </Card>
-                      </motion.div>
-                    ))
-                  ) : (
-                    <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg">
-                      <CardContent className="p-6 text-center text-gray-600">
-                        <Play className="w-8 h-8 mx-auto text-gray-400 mb-3" />
-                        <p>You haven't started any courses yet. Go to **All Courses** to begin!</p>
-                      </CardContent>
-                    </Card>
-                  )}
-                </div>
-              </div>
-
-              {/* Offline Downloads Placeholder */}
-              <div>
-                <h2 className="text-2xl font-bold text-gray-800 mb-2 flex items-center">
-                  <Download className="w-6 h-6 mr-2 text-blue-600" />
-                  Offline Downloads
-                </h2>
-                <p className="text-gray-600 mb-4">
-                  Access these courses even without an internet connection.
-                </p>
-
-                <div className="grid gap-6">
-                  {downloadedCourses.length > 0 ? (
-                    downloadedCourses.map((course, index) => (
-                      <motion.div
-                        key={course.id}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                      >
-                        <Card className="bg-blue-50 border border-blue-200 shadow-md">
-                          <CardContent className="p-4 flex items-center justify-between">
+                            {/* Progress Bar */}
                             <div className="flex items-center space-x-3">
-                              <CloudDownload className="w-6 h-6 text-blue-600 flex-shrink-0" />
-                              <div className='flex-1'>
-                                <h3 className="font-semibold text-gray-800 text-base">
-                                  {course.title}
-                                </h3>
-                                <div className="flex items-center space-x-2 text-sm text-gray-600">
-                                    <Clock className="w-4 h-4" />
-                                    <span>{course.duration}</span>
-                                </div>
-                              </div>
+                              <Progress
+                                value={course.progress}
+                                className="h-2 w-3/4 bg-gray-200"
+                              />
+                              <span className="text-sm font-medium text-purple-600">
+                                {course.progress}%
+                              </span>
                             </div>
-                            <div className="flex space-x-2">
-                                <Badge className="bg-blue-100 text-blue-800">Downloaded</Badge>
-                                <Button 
-                                    variant="outline" 
-                                    size="icon" 
-                                    className="border-red-300 text-red-600 hover:bg-red-100"
-                                    onClick={() => handleDownloadToggle(course.id)}
-                                    aria-label={`Remove download for ${course.title}`}
-                                >
-                                    <Trash2 className="w-4 h-4" />
-                                </Button>
-                                <Button className="bg-blue-500 hover:bg-blue-600">
-                                    View Offline
-                                </Button>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      </motion.div>
-                    ))
-                  ) : (
-                    <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg">
-                      <CardContent className="p-6 text-center text-gray-600">
-                        <Download className="w-8 h-8 mx-auto text-gray-400 mb-3" />
-                        <p>No courses have been downloaded yet. Find courses with the **Offline** badge to download them!</p>
-                      </CardContent>
-                    </Card>
-                  )}
-                </div>
+                          </div>
+
+                          <Button className="bg-purple-500 hover:bg-purple-600 ml-4">
+                            Continue
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    </motion.div>
+                  ))
+                ) : (
+                  <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg">
+                    <CardContent className="p-6 text-center text-gray-600">
+                      <Play className="w-8 h-8 mx-auto text-gray-400 mb-3" />
+                      <p>You haven't started any courses yet. Go to **All Courses** to begin!</p>
+                    </CardContent>
+                  </Card>
+                )}
               </div>
             </div>
           </TabsContent>
 
-          {/* Certificates Tab */}
+          {/* 3. Downloads Tab */}
+          <TabsContent value="downloads">
+            <div className="max-w-4xl mx-auto">
+              <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                <FolderOpen className="w-6 h-6 mr-2 text-blue-600" />
+                Offline Downloads ({downloadedCourses.length})
+              </h2>
+              <p className="text-gray-600 mb-6">
+                Access these courses anytime, even without an internet connection.
+              </p>
+
+              <div className="grid gap-6">
+                {downloadedCourses.length > 0 ? (
+                  downloadedCourses.map((course, index) => (
+                    <motion.div
+                      key={course.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                    >
+                      <Card className="bg-blue-50 border border-blue-200 shadow-md">
+                        <CardContent className="p-4 flex items-center justify-between">
+                          <div className="flex items-center space-x-4">
+                            <CloudDownload className="w-6 h-6 text-blue-600 flex-shrink-0" />
+                            <div className='flex-1'>
+                              <h3 className="font-semibold text-gray-800 text-base">
+                                {course.title}
+                              </h3>
+                              <div className="flex items-center space-x-2 text-sm text-gray-600">
+                                  <Clock className="w-4 h-4" />
+                                  <span>{course.duration}</span>
+                                  {course.progress !== undefined && course.progress > 0 && (
+                                    <>
+                                        <Badge variant="outline" className="bg-white text-purple-700">
+                                            Progress: {course.progress}%
+                                        </Badge>
+                                    </>
+                                  )}
+                              </div>
+                            </div>
+                          </div>
+                          <div className="flex space-x-2">
+                              <Button 
+                                  variant="outline" 
+                                  size="icon" 
+                                  className="border-red-300 text-red-600 hover:bg-red-100"
+                                  onClick={() => handleDownloadToggle(course.id)}
+                                  aria-label={`Remove download for ${course.title}`}
+                              >
+                                  <Trash2 className="w-4 h-4" />
+                              </Button>
+                              <Button className="bg-purple-500 hover:bg-blue-600">
+                                  View Offline
+                              </Button>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </motion.div>
+                  ))
+                ) : (
+                  <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg">
+                    <CardContent className="p-6 text-center text-gray-600">
+                      <Download className="w-8 h-8 mx-auto text-gray-400 mb-3" />
+                      <p>You haven't downloaded any courses yet. Use the **Offline** badge on course cards to save content for offline access!</p>
+                    </CardContent>
+                  </Card>
+                )}
+              </div>
+            </div>
+          </TabsContent>
+
+          {/* 4. Certificates Tab */}
           <TabsContent value="certificates">
             <div className="max-w-4xl mx-auto text-center py-12">
               <Award className="w-16 h-16 mx-auto text-yellow-500 mb-4" />
@@ -884,7 +898,7 @@ export default function EducationPage() {
                 Your Achievements
               </h2>
               <p className="text-lg text-gray-600 mb-8">
-                Certificates you earn upon course completion will appear here.
+                Certificates you earn upon course completion will appear here. Keep up the great work!
               </p>
               <Button className="bg-purple-500 hover:bg-purple-600">
                 Explore Courses to Earn Certificates
