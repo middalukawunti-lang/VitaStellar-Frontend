@@ -1,12 +1,12 @@
 import type { Config } from "tailwindcss"
 
-const config = {
+const config: Config = {
+  darkMode: "class", // Changed from ["class"] to "class"
   content: [
     "./pages/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
-    "*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
@@ -90,25 +90,9 @@ const config = {
       fontFamily: {
         sans: ["Inter", "system-ui", "sans-serif"],
       },
-      spacing: {
-        "18": "4.5rem",
-        "88": "22rem",
-      },
-      screens: {
-        xs: "475px",
-      },
     },
   },
-  // Safelist for dynamic classes to prevent purging
-  safelist: [
-    'text-blue-500',
-    'text-green-500',
-    'text-red-500',
-    'text-purple-500',
-    'text-emerald-500',
-    'text-rose-500',
-    'text-yellow-500',
-  ],
+  plugins: [],
 }
 
 export default config
