@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   BookOpen,
   Play,
@@ -19,49 +19,54 @@ import {
   Lock,
   Wifi,
   WifiOff,
-} from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Progress } from "@/components/ui/progress"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Navigation } from "@/components/layout/navigation"
-import { Footer } from "@/components/layout/footer"
+  CloudDownload,
+  Trash2,
+  FolderOpen, // New icon for Downloads
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Progress } from "@/components/ui/progress";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Navigation } from "@/components/layout/navigation";
+import { Footer } from "@/components/layout/footer";
 
 interface Course {
-  id: string
-  title: string
-  description: string
-  instructor: string
-  instructorAvatar: string
-  duration: string
-  lessons: number
-  students: number
-  rating: number
-  level: "beginner" | "intermediate" | "advanced"
-  category: string
-  language: string
-  region: string
-  price: number
-  isOfflineAvailable: boolean
-  progress?: number
-  thumbnail: string
-  tags: string[]
-  culturalContext: string
+  id: string;
+  title: string;
+  description: string;
+  instructor: string;
+  instructorAvatar: string;
+  duration: string;
+  lessons: number;
+  students: number;
+  rating: number;
+  level: "beginner" | "intermediate" | "advanced";
+  category: string;
+  language: string;
+  region: string;
+  price: number;
+  isOfflineAvailable: boolean;
+  progress?: number;
+  isDownloaded?: boolean;
+  thumbnail: string;
+  tags: string[];
+  culturalContext: string;
 }
 
 interface Lesson {
-  id: string
-  title: string
-  duration: string
-  type: "video" | "audio" | "text" | "interactive"
-  isCompleted: boolean
-  isLocked: boolean
+  id: string;
+  title: string;
+  duration: string;
+  type: "video" | "audio" | "text" | "interactive";
+  isCompleted: boolean;
+  isLocked: boolean;
 }
 
-const courses: Course[] = [
+// NOTE: Hardcoded data for demonstration purposes
+const initialCourses: Course[] = [
   {
     id: "1",
     title: "Traditional African Medicine: Foundations and Modern Applications",
@@ -79,10 +84,12 @@ const courses: Course[] = [
     region: "East Africa",
     price: 0,
     isOfflineAvailable: true,
+    isDownloaded: true, // Downloaded and 65% complete
     progress: 65,
     thumbnail: "/placeholder.svg?height=200&width=300",
     tags: ["Traditional Medicine", "Herbal Medicine", "Cultural Health"],
-    culturalContext: "Focuses on East African healing traditions with respect for cultural protocols",
+    culturalContext:
+      "Focuses on East African healing traditions with respect for cultural protocols",
   },
   {
     id: "2",
@@ -101,10 +108,12 @@ const courses: Course[] = [
     region: "West Africa",
     price: 0,
     isOfflineAvailable: true,
+    isDownloaded: false,
     progress: 0,
     thumbnail: "/placeholder.svg?height=200&width=300",
     tags: ["Community Health", "Primary Care", "Rural Health"],
-    culturalContext: "Designed for West African communities with emphasis on local health challenges",
+    culturalContext:
+      "Designed for West African communities with emphasis on local health challenges",
   },
   {
     id: "3",
@@ -123,10 +132,12 @@ const courses: Course[] = [
     region: "Southern Africa",
     price: 25,
     isOfflineAvailable: true,
+    isDownloaded: true, // Downloaded but 0% complete
     progress: 0,
     thumbnail: "/placeholder.svg?height=200&width=300",
     tags: ["Maternal Health", "Child Health", "Nutrition"],
-    culturalContext: "Incorporates Southern African cultural practices around childbirth and child-rearing",
+    culturalContext:
+      "Incorporates Southern African cultural practices around childbirth and child-rearing",
   },
   {
     id: "4",
@@ -145,12 +156,14 @@ const courses: Course[] = [
     region: "West Africa",
     price: 35,
     isOfflineAvailable: false,
+    isDownloaded: false,
     progress: 0,
     thumbnail: "/placeholder.svg?height=200&width=300",
     tags: ["Mental Health", "Cultural Therapy", "Traditional Healing"],
-    culturalContext: "Explores Akan and broader West African approaches to mental wellness",
+    culturalContext:
+      "Explores Akan and broader West African approaches to mental wellness",
   },
-]
+];
 
 const sampleLessons: Lesson[] = [
   {
@@ -193,68 +206,99 @@ const sampleLessons: Lesson[] = [
     isCompleted: false,
     isLocked: true,
   },
-]
+];
 
 export default function EducationPage() {
-  const [selectedCourse, setSelectedCourse] = useState<Course | null>(null)
-  const [searchTerm, setSearchTerm] = useState("")
-  const [selectedCategory, setSelectedCategory] = useState("all")
-  const [selectedLevel, setSelectedLevel] = useState("all")
-  const [isOnline, setIsOnline] = useState(true)
-  const [activeTab, setActiveTab] = useState("courses")
+  const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedLevel, setSelectedLevel] = useState("all");
+  const [isOnline, setIsOnline] = useState(true);
+  const [activeTab, setActiveTab] = useState("courses");
+  const [myCourses, setMyCourses] = useState(initialCourses);
 
   useEffect(() => {
-    const handleOnline = () => setIsOnline(true)
-    const handleOffline = () => setIsOnline(false)
+    // Initial selection: select the first course in the initial list
+    if (initialCourses.length > 0) {
+      setSelectedCourse(initialCourses[0]);
+    }
 
-    window.addEventListener("online", handleOnline)
-    window.addEventListener("offline", handleOffline)
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
 
     return () => {
-      window.removeEventListener("online", handleOnline)
-      window.removeEventListener("offline", handleOffline)
-    }
-  }, [])
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
+    };
+  }, []);
 
-  const filteredCourses = courses.filter((course) => {
+  const filteredCourses = myCourses.filter((course) => {
     const matchesSearch =
       course.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       course.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      course.instructor.toLowerCase().includes(searchTerm.toLowerCase())
+      course.instructor.toLowerCase().includes(searchTerm.toLowerCase());
 
-    const matchesCategory = selectedCategory === "all" || course.category === selectedCategory
-    const matchesLevel = selectedLevel === "all" || course.level === selectedLevel
+    const matchesCategory =
+      selectedCategory === "all" || course.category === selectedCategory;
+    const matchesLevel =
+      selectedLevel === "all" || course.level === selectedLevel;
 
-    return matchesSearch && matchesCategory && matchesLevel
-  })
+    return matchesSearch && matchesCategory && matchesLevel;
+  });
 
   const getLevelColor = (level: string) => {
     switch (level) {
       case "beginner":
-        return "bg-green-100 text-green-800"
+        return "bg-green-100 text-green-800";
       case "intermediate":
-        return "bg-yellow-100 text-yellow-800"
+        return "bg-yellow-100 text-yellow-800";
       case "advanced":
-        return "bg-red-100 text-red-800"
+        return "bg-red-100 text-red-800";
       default:
-        return "bg-gray-100 text-gray-800"
+        return "bg-gray-100 text-gray-800";
     }
-  }
+  };
 
   const getTypeIcon = (type: string) => {
     switch (type) {
       case "video":
-        return <Video className="w-4 h-4" />
+        return <Video className="w-4 h-4" />;
       case "audio":
-        return <Headphones className="w-4 h-4" />
+        return <Headphones className="w-4 h-4" />;
       case "text":
-        return <FileText className="w-4 h-4" />
+        return <FileText className="w-4 h-4" />;
       case "interactive":
-        return <Play className="w-4 h-4" />
+        return <Play className="w-4 h-4" />;
       default:
-        return <BookOpen className="w-4 h-4" />
+        return <BookOpen className="w-4 h-4" />;
     }
-  }
+  };
+
+  const handleDownloadToggle = (courseId: string) => {
+    setMyCourses((prevCourses) =>
+      prevCourses.map((course) =>
+        course.id === courseId
+          ? {
+              ...course,
+              isDownloaded: !course.isDownloaded,
+            }
+          : course
+      )
+    );
+  };
+
+  const ongoingCourses = myCourses.filter(
+    (course) => course.progress !== undefined && course.progress > 0
+  );
+
+  const downloadedCourses = myCourses.filter(
+    (course) => course.isDownloaded && course.isOfflineAvailable
+  );
+  
+  const totalCourses = initialCourses.length;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-50">
@@ -263,7 +307,10 @@ export default function EducationPage() {
       {/* Header */}
       <section className="py-12 px-4">
         <div className="container mx-auto text-center">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
             <div className="text-6xl mb-4">
               <BookOpen className="w-16 h-16 mx-auto text-purple-600" />
             </div>
@@ -271,22 +318,29 @@ export default function EducationPage() {
               Health Education for Africa
             </h1>
             <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-              Learn from African healthcare experts. Culturally relevant education that bridges traditional wisdom with
-              modern medical knowledge. Available offline for remote areas.
+              Learn from African healthcare experts. Culturally relevant
+              education that bridges traditional wisdom with modern medical
+              knowledge. Available offline for remote areas.
             </p>
 
             {/* Connection Status */}
             <div className="flex justify-center mb-8">
               <div
                 className={`flex items-center space-x-2 px-4 py-2 rounded-full ${
-                  isOnline ? "bg-green-100 text-green-700" : "bg-orange-100 text-orange-700"
+                  isOnline
+                    ? "bg-green-100 text-green-700"
+                    : "bg-orange-100 text-orange-700"
                 }`}
               >
-                {isOnline ? <Wifi className="w-5 h-5" /> : <WifiOff className="w-5 h-5" />}
+                {isOnline ? (
+                  <Wifi className="w-5 h-5" />
+                ) : (
+                  <WifiOff className="w-5 h-5" />
+                )}
                 <span className="font-medium">
                   {isOnline
                     ? "Online - All Courses Available"
-                    : `Offline Mode - ${courses.filter((c) => c.isOfflineAvailable).length} Courses Available`}
+                    : `Offline Mode - ${downloadedCourses.length} Downloaded Courses`}
                 </span>
               </div>
             </div>
@@ -296,13 +350,14 @@ export default function EducationPage() {
 
       <div className="container mx-auto px-4 pb-12">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-3 max-w-md mx-auto mb-8">
-            <TabsTrigger value="courses">All Courses</TabsTrigger>
-            <TabsTrigger value="my-learning">My Learning</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-4 max-w-2xl mx-auto mb-8">
+            <TabsTrigger value="courses">All Courses ({totalCourses})</TabsTrigger>
+            <TabsTrigger value="my-learning">My Learning ({ongoingCourses.length})</TabsTrigger>
+            <TabsTrigger value="downloads">Downloads ({downloadedCourses.length})</TabsTrigger>
             <TabsTrigger value="certificates">Certificates</TabsTrigger>
           </TabsList>
 
-          {/* All Courses Tab */}
+          {/* 1. All Courses Tab */}
           <TabsContent value="courses">
             <div className="grid lg:grid-cols-3 gap-8">
               {/* Courses List */}
@@ -325,7 +380,9 @@ export default function EducationPage() {
                       className="px-4 py-2 border border-purple-200 rounded-md focus:border-purple-400 focus:outline-none"
                     >
                       <option value="all">All Categories</option>
-                      <option value="Traditional Medicine">Traditional Medicine</option>
+                      <option value="Traditional Medicine">
+                        Traditional Medicine
+                      </option>
                       <option value="Community Health">Community Health</option>
                       <option value="Maternal Health">Maternal Health</option>
                       <option value="Mental Health">Mental Health</option>
@@ -348,7 +405,7 @@ export default function EducationPage() {
                         <WifiOff className="w-5 h-5" />
                         <span className="font-medium">
                           Offline Mode: Showing only downloaded courses (
-                          {courses.filter((c) => c.isOfflineAvailable).length} available)
+                          {downloadedCourses.length} available)
                         </span>
                       </div>
                     </div>
@@ -380,18 +437,27 @@ export default function EducationPage() {
                                 <div className="flex-1">
                                   <div className="flex items-start justify-between mb-2">
                                     <div>
-                                      <h3 className="font-semibold text-gray-800 text-lg mb-1">{course.title}</h3>
-                                      <p className="text-sm text-gray-600 mb-2">{course.description}</p>
+                                      <h3 className="font-semibold text-gray-800 text-lg mb-1">
+                                        {course.title}
+                                      </h3>
+                                      <p className="text-sm text-gray-600 mb-2">
+                                        {course.description}
+                                      </p>
                                     </div>
                                     <div className="flex items-center space-x-2">
                                       {course.isOfflineAvailable && (
-                                        <Badge variant="outline" className="border-green-200 text-green-700">
+                                        <Badge
+                                          variant="outline"
+                                          className="border-green-200 text-green-700"
+                                        >
                                           <Download className="w-3 h-3 mr-1" />
                                           Offline
                                         </Badge>
                                       )}
                                       {course.price === 0 && (
-                                        <Badge className="bg-green-100 text-green-800">Free</Badge>
+                                        <Badge className="bg-green-100 text-green-800">
+                                          Free
+                                        </Badge>
                                       )}
                                     </div>
                                   </div>
@@ -399,7 +465,12 @@ export default function EducationPage() {
                                   <div className="flex items-center space-x-4 mb-3">
                                     <div className="flex items-center space-x-2">
                                       <Avatar className="w-6 h-6">
-                                        <AvatarImage src={course.instructorAvatar || "/placeholder.svg"} />
+                                        <AvatarImage
+                                          src={
+                                            course.instructorAvatar ||
+                                            "/placeholder.svg"
+                                          }
+                                        />
                                         <AvatarFallback className="text-xs">
                                           {course.instructor
                                             .split(" ")
@@ -407,18 +478,30 @@ export default function EducationPage() {
                                             .join("")}
                                         </AvatarFallback>
                                       </Avatar>
-                                      <span className="text-sm text-gray-600">{course.instructor}</span>
+                                      <span className="text-sm text-gray-600">
+                                        {course.instructor}
+                                      </span>
                                     </div>
                                     <div className="flex items-center space-x-1">
                                       <Star className="w-4 h-4 text-yellow-500" />
-                                      <span className="text-sm font-medium">{course.rating}</span>
+                                      <span className="text-sm font-medium">
+                                        {course.rating}
+                                      </span>
                                     </div>
-                                    <Badge className={getLevelColor(course.level)}>{course.level}</Badge>
+                                    <Badge
+                                      className={getLevelColor(course.level)}
+                                    >
+                                      {course.level}
+                                    </Badge>
                                   </div>
 
                                   <div className="flex flex-wrap gap-2 mb-3">
                                     {course.tags.slice(0, 3).map((tag, idx) => (
-                                      <Badge key={idx} variant="outline" className="border-purple-200 text-purple-700">
+                                      <Badge
+                                        key={idx}
+                                        variant="outline"
+                                        className="border-purple-200 text-purple-700"
+                                      >
                                         {tag}
                                       </Badge>
                                     ))}
@@ -436,7 +519,9 @@ export default function EducationPage() {
                                       </div>
                                       <div className="flex items-center space-x-1">
                                         <Users className="w-4 h-4" />
-                                        <span>{course.students.toLocaleString()}</span>
+                                        <span>
+                                          {course.students.toLocaleString()}
+                                        </span>
                                       </div>
                                     </div>
                                     <div className="flex items-center space-x-2">
@@ -445,24 +530,37 @@ export default function EducationPage() {
                                     </div>
                                   </div>
 
-                                  {course.progress !== undefined && course.progress > 0 && (
-                                    <div className="mt-3">
-                                      <div className="flex items-center justify-between mb-1">
-                                        <span className="text-sm text-gray-600">Progress</span>
-                                        <span className="text-sm font-medium">{course.progress}%</span>
+                                  {course.progress !== undefined &&
+                                    course.progress > 0 && (
+                                      <div className="mt-3">
+                                        <div className="flex items-center justify-between mb-1">
+                                          <span className="text-sm text-gray-600">
+                                            Progress
+                                          </span>
+                                          <span className="text-sm font-medium">
+                                            {course.progress}%
+                                          </span>
+                                        </div>
+                                        <Progress
+                                          value={course.progress}
+                                          className="h-2"
+                                        />
                                       </div>
-                                      <Progress value={course.progress} className="h-2" />
-                                    </div>
-                                  )}
+                                    )}
 
                                   <div className="mt-4 pt-3 border-t border-gray-100">
-                                    <p className="text-xs text-purple-600 mb-2">{course.culturalContext}</p>
+                                    <p className="text-xs text-purple-600 mb-2">
+                                      {course.culturalContext}
+                                    </p>
                                     <div className="flex justify-between items-center">
                                       <span className="text-lg font-semibold text-gray-800">
-                                        {course.price === 0 ? "Free" : `$${course.price}`}
+                                        {course.price === 0
+                                          ? "Free"
+                                          : `$${course.price}`}
                                       </span>
                                       <Button className="bg-purple-500 hover:bg-purple-600">
-                                        {course.progress !== undefined && course.progress > 0
+                                        {course.progress !== undefined &&
+                                        course.progress > 0
                                           ? "Continue"
                                           : "Start Course"}
                                       </Button>
@@ -491,13 +589,22 @@ export default function EducationPage() {
                     <CardContent>
                       <div className="space-y-4">
                         <div>
-                          <h3 className="font-semibold text-lg mb-2">{selectedCourse.title}</h3>
-                          <p className="text-sm text-gray-600 mb-3">{selectedCourse.description}</p>
+                          <h3 className="font-semibold text-lg mb-2">
+                            {selectedCourse.title}
+                          </h3>
+                          <p className="text-sm text-gray-600 mb-3">
+                            {selectedCourse.description}
+                          </p>
                         </div>
 
                         <div className="flex items-center space-x-3">
                           <Avatar>
-                            <AvatarImage src={selectedCourse.instructorAvatar || "/placeholder.svg"} />
+                            <AvatarImage
+                              src={
+                                selectedCourse.instructorAvatar ||
+                                "/placeholder.svg"
+                              }
+                            />
                             <AvatarFallback>
                               {selectedCourse.instructor
                                 .split(" ")
@@ -506,45 +613,64 @@ export default function EducationPage() {
                             </AvatarFallback>
                           </Avatar>
                           <div>
-                            <p className="font-medium">{selectedCourse.instructor}</p>
-                            <p className="text-sm text-gray-600">{selectedCourse.region}</p>
+                            <p className="font-medium">
+                              {selectedCourse.instructor}
+                            </p>
+                            <p className="text-sm text-gray-600">
+                              {selectedCourse.region}
+                            </p>
                           </div>
                         </div>
 
                         <div className="grid grid-cols-2 gap-4">
                           <div>
                             <p className="text-sm text-gray-600">Duration</p>
-                            <p className="font-medium">{selectedCourse.duration}</p>
+                            <p className="font-medium">
+                              {selectedCourse.duration}
+                            </p>
                           </div>
                           <div>
                             <p className="text-sm text-gray-600">Lessons</p>
-                            <p className="font-medium">{selectedCourse.lessons}</p>
+                            <p className="font-medium">
+                              {selectedCourse.lessons}
+                            </p>
                           </div>
                           <div>
                             <p className="text-sm text-gray-600">Students</p>
-                            <p className="font-medium">{selectedCourse.students.toLocaleString()}</p>
+                            <p className="font-medium">
+                              {selectedCourse.students.toLocaleString()}
+                            </p>
                           </div>
                           <div>
                             <p className="text-sm text-gray-600">Rating</p>
                             <div className="flex items-center space-x-1">
                               <Star className="w-4 h-4 text-yellow-500" />
-                              <span className="font-medium">{selectedCourse.rating}</span>
+                              <span className="font-medium">
+                                {selectedCourse.rating}
+                              </span>
                             </div>
                           </div>
                         </div>
 
                         <div>
-                          <p className="text-sm text-gray-600 mb-2">Cultural Context</p>
+                          <p className="text-sm text-gray-600 mb-2">
+                            Cultural Context
+                          </p>
                           <p className="text-sm text-purple-600 bg-purple-50 p-3 rounded-lg">
                             {selectedCourse.culturalContext}
                           </p>
                         </div>
 
                         <div>
-                          <p className="text-sm text-gray-600 mb-2">What you'll learn</p>
+                          <p className="text-sm text-gray-600 mb-2">
+                            What you'll learn
+                          </p>
                           <div className="space-y-2">
                             {selectedCourse.tags.map((tag, idx) => (
-                              <div key={idx} className="flex items-center space-x-2">
+                              <div
+                                key={idx}
+                                className="flex items-center space-x-2"
+                              >
                                 <CheckCircle className="w-4 h-4 text-green-500" />
                                 <span className="text-sm">{tag}</span>
                               </div>
@@ -553,7 +679,9 @@ export default function EducationPage() {
                         </div>
 
                         <Button className="w-full bg-purple-500 hover:bg-purple-600">
-                          {selectedCourse.price === 0 ? "Enroll for Free" : `Enroll for $${selectedCourse.price}`}
+                          {selectedCourse.price === 0
+                            ? "Enroll for Free"
+                            : `Enroll for $${selectedCourse.price}`}
                         </Button>
                       </div>
                     </CardContent>
@@ -562,7 +690,9 @@ export default function EducationPage() {
                   <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg">
                     <CardContent className="p-8 text-center">
                       <BookOpen className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                      <p className="text-gray-600">Select a course to view details</p>
+                      <p className="text-gray-600">
+                        Select a course to view details
+                      </p>
                     </CardContent>
                   </Card>
                 )}
@@ -571,7 +701,9 @@ export default function EducationPage() {
                 {selectedCourse && (
                   <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg">
                     <CardHeader>
-                      <CardTitle className="text-purple-700">Course Content</CardTitle>
+                      <CardTitle className="text-purple-700">
+                        Course Content
+                      </CardTitle>
                     </CardHeader>
                     <CardContent>
                       <div className="space-y-3">
@@ -605,8 +737,12 @@ export default function EducationPage() {
                                 )}
                               </div>
                               <div>
-                                <p className="font-medium text-sm">{lesson.title}</p>
-                                <p className="text-xs text-gray-600">{lesson.duration}</p>
+                                <p className="font-medium text-sm">
+                                  {lesson.title}
+                                </p>
+                                <p className="text-xs text-gray-600">
+                                  {lesson.duration}
+                                </p>
                               </div>
                             </div>
                             <Badge variant="outline" className="text-xs">
@@ -622,69 +758,60 @@ export default function EducationPage() {
             </div>
           </TabsContent>
 
-          {/* My Learning Tab */}
+          {/* 2. My Learning Tab */}
           <TabsContent value="my-learning">
             <div className="max-w-4xl mx-auto">
-              <div className="mb-6">
-                <h2 className="text-2xl font-bold text-gray-800 mb-2">My Learning Progress</h2>
-                <p className="text-gray-600">Track your educational journey and achievements</p>
-              </div>
+              <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                <BookOpen className="w-6 h-6 mr-2 text-purple-600" />
+                Courses in Progress ({ongoingCourses.length})
+              </h2>
+              <p className="text-gray-600 mb-6">
+                Jump back into your active courses and continue learning.
+              </p>
 
               <div className="grid gap-6">
-                {courses
-                  .filter((course) => course.progress !== undefined && course.progress > 0)
-                  .map((course, index) => (
+                {ongoingCourses.length > 0 ? (
+                  ongoingCourses.map((course, index) => (
                     <motion.div
                       key={course.id}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.1 }}
                     >
-                      <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg">
-                        <CardContent className="p-6">
-                          <div className="flex items-center justify-between mb-4">
-                            <div>
-                              <h3 className="font-semibold text-gray-800">{course.title}</h3>
-                              <p className="text-sm text-gray-600">{course.instructor}</p>
-                            </div>
-                            <Badge className={getLevelColor(course.level)}>{course.level}</Badge>
-                          </div>
+                      <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-300">
+                        <CardContent className="p-4 flex items-center justify-between">
+                          <div className="flex-1">
+                            <h3 className="font-semibold text-gray-800 text-lg mb-1">
+                              {course.title}
+                            </h3>
+                            <p className="text-sm text-gray-600 mb-3">
+                              Taught by {course.instructor}
+                            </p>
 
-                          <div className="mb-4">
-                            <div className="flex items-center justify-between mb-2">
-                              <span className="text-sm text-gray-600">Progress</span>
-                              <span className="text-sm font-medium">{course.progress}% complete</span>
-                            </div>
-                            <Progress value={course.progress || 0} className="h-3" />
-                          </div>
-
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center space-x-4 text-sm text-gray-600">
-                              <span>
-                                {Math.floor(((course.progress || 0) / 100) * course.lessons)} of {course.lessons}{" "}
-                                lessons
+                            {/* Progress Bar */}
+                            <div className="flex items-center space-x-3">
+                              <Progress
+                                value={course.progress}
+                                className="h-2 w-3/4 bg-gray-200"
+                              />
+                              <span className="text-sm font-medium text-purple-600">
+                                {course.progress}%
                               </span>
-                              <span>•</span>
-                              <span>{course.duration} total</span>
                             </div>
-                            <Button className="bg-purple-500 hover:bg-purple-600">Continue Learning</Button>
                           </div>
+
+                          <Button className="bg-purple-500 hover:bg-purple-600 ml-4">
+                            Continue
+                          </Button>
                         </CardContent>
                       </Card>
                     </motion.div>
-                  ))}
-
-                {courses.filter((course) => course.progress !== undefined && course.progress > 0).length === 0 && (
+                  ))
+                ) : (
                   <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg">
-                    <CardContent className="p-12 text-center">
-                      <BookOpen className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                      <h3 className="text-lg font-semibold text-gray-800 mb-2">No Courses Started</h3>
-                      <p className="text-gray-600 mb-6">
-                        Begin your learning journey with our culturally relevant courses
-                      </p>
-                      <Button onClick={() => setActiveTab("courses")} className="bg-purple-500 hover:bg-purple-600">
-                        Browse Courses
-                      </Button>
+                    <CardContent className="p-6 text-center text-gray-600">
+                      <Play className="w-8 h-8 mx-auto text-gray-400 mb-3" />
+                      <p>You haven't started any courses yet. Go to **All Courses** to begin!</p>
                     </CardContent>
                   </Card>
                 )}
@@ -692,26 +819,90 @@ export default function EducationPage() {
             </div>
           </TabsContent>
 
-          {/* Certificates Tab */}
-          <TabsContent value="certificates">
+          {/* 3. Downloads Tab */}
+          <TabsContent value="downloads">
             <div className="max-w-4xl mx-auto">
-              <div className="mb-6">
-                <h2 className="text-2xl font-bold text-gray-800 mb-2">Your Certificates</h2>
-                <p className="text-gray-600">Showcase your completed courses and achievements</p>
-              </div>
+              <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                <FolderOpen className="w-6 h-6 mr-2 text-blue-600" />
+                Offline Downloads ({downloadedCourses.length})
+              </h2>
+              <p className="text-gray-600 mb-6">
+                Access these courses anytime, even without an internet connection.
+              </p>
 
-              <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg">
-                <CardContent className="p-12 text-center">
-                  <Award className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold text-gray-800 mb-2">No Certificates Yet</h3>
-                  <p className="text-gray-600 mb-6">
-                    Complete courses to earn certificates and showcase your expertise
-                  </p>
-                  <Button onClick={() => setActiveTab("courses")} className="bg-purple-500 hover:bg-purple-600">
-                    Start Learning
-                  </Button>
-                </CardContent>
-              </Card>
+              <div className="grid gap-6">
+                {downloadedCourses.length > 0 ? (
+                  downloadedCourses.map((course, index) => (
+                    <motion.div
+                      key={course.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                    >
+                      <Card className="bg-blue-50 border border-blue-200 shadow-md">
+                        <CardContent className="p-4 flex items-center justify-between">
+                          <div className="flex items-center space-x-4">
+                            <CloudDownload className="w-6 h-6 text-blue-600 flex-shrink-0" />
+                            <div className='flex-1'>
+                              <h3 className="font-semibold text-gray-800 text-base">
+                                {course.title}
+                              </h3>
+                              <div className="flex items-center space-x-2 text-sm text-gray-600">
+                                  <Clock className="w-4 h-4" />
+                                  <span>{course.duration}</span>
+                                  {course.progress !== undefined && course.progress > 0 && (
+                                    <>
+                                        <Badge variant="outline" className="bg-white text-purple-700">
+                                            Progress: {course.progress}%
+                                        </Badge>
+                                    </>
+                                  )}
+                              </div>
+                            </div>
+                          </div>
+                          <div className="flex space-x-2">
+                              <Button 
+                                  variant="outline" 
+                                  size="icon" 
+                                  className="border-red-300 text-red-600 hover:bg-red-100"
+                                  onClick={() => handleDownloadToggle(course.id)}
+                                  aria-label={`Remove download for ${course.title}`}
+                              >
+                                  <Trash2 className="w-4 h-4" />
+                              </Button>
+                              <Button className="bg-purple-500 hover:bg-blue-600">
+                                  View Offline
+                              </Button>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </motion.div>
+                  ))
+                ) : (
+                  <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg">
+                    <CardContent className="p-6 text-center text-gray-600">
+                      <Download className="w-8 h-8 mx-auto text-gray-400 mb-3" />
+                      <p>You haven't downloaded any courses yet. Use the **Offline** badge on course cards to save content for offline access!</p>
+                    </CardContent>
+                  </Card>
+                )}
+              </div>
+            </div>
+          </TabsContent>
+
+          {/* 4. Certificates Tab */}
+          <TabsContent value="certificates">
+            <div className="max-w-4xl mx-auto text-center py-12">
+              <Award className="w-16 h-16 mx-auto text-yellow-500 mb-4" />
+              <h2 className="text-3xl font-bold text-gray-800 mb-4">
+                Your Achievements
+              </h2>
+              <p className="text-lg text-gray-600 mb-8">
+                Certificates you earn upon course completion will appear here. Keep up the great work!
+              </p>
+              <Button className="bg-purple-500 hover:bg-purple-600">
+                Explore Courses to Earn Certificates
+              </Button>
             </div>
           </TabsContent>
         </Tabs>
@@ -719,5 +910,5 @@ export default function EducationPage() {
 
       <Footer />
     </div>
-  )
+  );
 }
