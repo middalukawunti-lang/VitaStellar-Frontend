@@ -51,4 +51,4 @@ To start contributing:
 1. Fork the repository from GitHub.  
 2. Clone your fork locally:
    ```bash
-   git clone https://github.com/<your-username>/drip.git
+   git clone https://github.com/<your-username>
