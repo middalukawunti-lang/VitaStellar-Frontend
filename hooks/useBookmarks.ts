@@ -2,7 +2,7 @@
  * hooks/useBookmarks.ts
  *
  * Issue #215 — Add Task Bookmarking
- * Stellar-Uzima/Uzima-Frontend
+ * VitaStellar/VitaStellar-Frontend
  *
  * Manages bookmarked task IDs in localStorage.
  * Persists across page refreshes and browser sessions.
@@ -12,7 +12,7 @@
 
 import * as React from 'react'
 
-const STORAGE_KEY = 'uzima:bookmarked-tasks'
+const STORAGE_KEY = 'vitastellar:bookmarked-tasks'
 
 function readFromStorage(): Set<string> {
   if (typeof window === 'undefined') return new Set()

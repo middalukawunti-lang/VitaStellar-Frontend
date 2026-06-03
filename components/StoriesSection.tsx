@@ -1,7 +1,7 @@
 export default function StoriesSection() {
   const stories = [
     {
-      quote: 'Stellar Uzima changed my life. I lost 15kg, saved ₦200K, and made lifelong friends.',
+      quote: 'VitaStellar changed my life. I lost 15kg, saved ₦200K, and made lifelong friends.',
       author: 'Amara K.',
       role: 'Health & Wealth Member',
       gradient: 'linear-gradient(135deg, #E08B2E 0%, #F0C050 100%)',

@@ -11,7 +11,7 @@ export function UpdateBanner() {
   const bannerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const dismissedFlag = localStorage.getItem('uzima-update-dismissed');
+    const dismissedFlag = localStorage.getItem('vitastellar-update-dismissed');
     if (dismissedFlag) {
       setDismissed(true);
     }
@@ -19,7 +19,7 @@ export function UpdateBanner() {
 
   const handleDismiss = () => {
     setDismissed(true);
-    localStorage.setItem('uzima-update-dismissed', 'true');
+    localStorage.setItem('vitastellar-update-dismissed', 'true');
   };
 
  const isVisible = true;
@@ -60,7 +60,7 @@ export function UpdateBanner() {
       <div className="container mx-auto px-4 py-3 flex items-center justify-between min-h-[48px]">
         <div className="flex-1">
           <p className="text-sm font-medium">
-            A new version of Stellar Uzima is available.
+            A new version of VitaStellar is available.
           </p>
         </div>
         <div className="flex items-center gap-2 ml-4">

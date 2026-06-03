@@ -68,13 +68,13 @@ export default function HealthTaskForm() {
   } = methods;
 
   useEffect(() => {
-    const savedDraft = localStorage.getItem("uzima_task_draft");
+    const savedDraft = localStorage.getItem("vitastellar_task_draft");
     if (savedDraft) methods.reset(JSON.parse(savedDraft));
   }, [methods]);
 
   useEffect(() => {
     const subscription = methods.watch((value) => {
-      localStorage.setItem("uzima_task_draft", JSON.stringify(value));
+      localStorage.setItem("vitastellar_task_draft", JSON.stringify(value));
     });
     return () => subscription.unsubscribe();
   }, [methods.watch]);
@@ -95,7 +95,7 @@ export default function HealthTaskForm() {
         console.log("Task queued for offline sync:", data);
       }
       
-      localStorage.removeItem("uzima_task_draft");
+      localStorage.removeItem("vitastellar_task_draft");
       setIsSubmitted(true);
     } catch (error) {
       console.error("Error submitting task:", error);
@@ -336,7 +336,7 @@ export default function HealthTaskForm() {
                     <h4 className="font-bold mb-2">Declaration</h4>
                     <p className="text-sm text-muted-foreground leading-relaxed">
                       By submitting this task, you certify that the medical
-                      information provided is accurate and adheres to Uzima
+                      information provided is accurate and adheres to VitaStellar
                       health standards. Tasks found providing harmful advice
                       will lead to account suspension.
                     </p>
@@ -405,7 +405,7 @@ export default function HealthTaskForm() {
                 Availability: {methods.watch("languages")}
               </span>
               <span className="text-[10px] font-bold uppercase text-primary">
-                Stellar-Uzima Verified
+                VitaStellar Verified
               </span>
             </CardFooter>
           </Card>

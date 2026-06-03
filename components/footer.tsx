@@ -100,7 +100,7 @@ export default function Footer() {
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-center items-center gap-6 text-xs text-cream/60">
 
 
-            <p>© {currentYear} Stellar Uzima. All rights reserved.</p>
+            <p>© {currentYear} VitaStellar. All rights reserved.</p>
 
 
 

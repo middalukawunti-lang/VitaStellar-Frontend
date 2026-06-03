@@ -1,7 +1,7 @@
 {
-  "name": "Stellar Uzima",
-  "short_name": "Uzima",
-  "description": "Earn XLM for your health. Transform your health, wealth, and community with blockchain-powered rewards across Africa.",
+  "name": "VitaStellar",
+  "short_name": "VitaStellar",
+  "description": "Decentralized Health & Wellness Powered by Stellar. Track health goals, earn XLM rewards, and own your wellness data.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#FDF5E8",

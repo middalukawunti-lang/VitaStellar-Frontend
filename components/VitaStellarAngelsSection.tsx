@@ -1,6 +1,6 @@
 // Server-rendered to keep static marketing content out of the client bundle.
 
-export default function UzimaAngelsSection() {
+export default function VitaStellarAngelsSection() {
   const angels = [
     {
       name: 'Amara Okafor',
@@ -52,12 +52,12 @@ export default function UzimaAngelsSection() {
 
           <h2 className="font-serif font-bold text-earth leading-tight mb-4 inline-block animate-fadeUp"
             style={{ fontSize: 'clamp(1.8rem, 3vw, 2.8rem)', letterSpacing: '-0.02em', animationDelay: '0.1s' }}>
-            Uzima <em className="italic text-terra">Angels</em>
+            VitaStellar <em className="italic text-terra">Angels</em>
           </h2>
 
           <p className="text-earth/70 max-w-2xl mx-auto text-sm leading-relaxed animate-fadeUp"
             style={{ animationDelay: '0.2s' }}>
-            Meet the champions extending Stellar Uzima's mission to rural communities across Africa. These sponsors are bringing health, wealth, and community to underserved regions, one village at a time.
+            Meet the champions extending VitaStellar's mission to rural communities across Africa. These sponsors are bringing health, wealth, and community to underserved regions, one village at a time.
           </p>
         </div>
 
@@ -128,7 +128,7 @@ export default function UzimaAngelsSection() {
 
           <div className="relative z-10">
             <h3 className="font-serif font-bold text-cream text-2xl mb-3">
-              Want to Be an Uzima Angel?
+              Want to Be a VitaStellar Angel?
             </h3>
             <p className="text-cream/80 max-w-2xl mx-auto text-sm leading-relaxed mb-6">
               Join our network of sponsors bringing transformative health, wealth, and community programs to rural regions. Make real impact while earning rewards.

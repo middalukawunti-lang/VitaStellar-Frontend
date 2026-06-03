@@ -8,7 +8,7 @@ import EarnSection from "@/components/EarnSection";
 import CouponsSection from "@/components/CouponsSection";
 import CommunitySection from "@/components/CommunitySection";
 import TraditionalMedicineSection from "@/components/TraditionalMedicineSection";
-import UzimaAngelsSection from "@/components/UzimaAngelsSection";
+import VitaStellarAngelsSection from "@/components/VitaStellarAngelsSection";
 import BiotechnologySection from "@/components/BiotechnologySection";
 import BlockchainSection from "@/components/BlockchainSection";
 import StoriesSection from "@/components/StoriesSection";
@@ -28,7 +28,7 @@ export default function Home() {
       <CouponsSection />
       <CommunitySection />
       <TraditionalMedicineSection />
-      <UzimaAngelsSection />
+      <VitaStellarAngelsSection />
       <BiotechnologySection />
       <BlockchainSection />
       <StoriesSection />

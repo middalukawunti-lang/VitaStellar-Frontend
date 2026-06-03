@@ -159,7 +159,7 @@ export function TaskCommunity({ taskId, taskTitle }: TaskCommunityProps) {
 
   const handleChallengeFriend = () => {
     const text = encodeURIComponent(
-      `Hey! I just completed the "${taskTitle}" health task on Stellar Uzima and earned XLM rewards. Join me and let's build healthy habits together 💪 https://uzima.app/tasks/${taskId}`,
+      `Hey! I just completed the "${taskTitle}" health task on VitaStellar and earned XLM rewards. Join me and let's build healthy habits together 💪 https://vitastellar.app/tasks/${taskId}`,
     );
     window.open(`https://wa.me/?text=${text}`, "_blank", "noopener,noreferrer");
   };

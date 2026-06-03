@@ -3,9 +3,9 @@ import Footer from "@/components/footer";
 import { AfricaMapLoader } from "@/components/community/AfricaMapLoader";
 
 export const metadata = {
-  title: "Community | Stellar Uzima",
+  title: "Community | VitaStellar",
   description:
-    "Explore Stellar Uzima community presence and regional hubs across Africa.",
+    "Explore VitaStellar community presence and regional hubs across Africa.",
 };
 
 export default function CommunityPage() {
@@ -23,7 +23,7 @@ export default function CommunityPage() {
             </h1>
             <p className="text-muted max-w-lg mx-auto">
               Regional hubs and language communities connected through Stellar
-              Uzima.
+              VitaStellar.
             </p>
           </header>
           <AfricaMapLoader />

@@ -21,7 +21,7 @@ export function InstallPrompt() {
           <div className="flex items-start justify-between gap-3">
             <div className="flex-1">
               <h3 className="font-bold text-base mb-1 text-[#1A1A1A]">
-                Install Stellar Uzima
+                Install VitaStellar
               </h3>
               <p className="text-sm text-muted-foreground leading-relaxed">
                 Install for offline access and faster loading

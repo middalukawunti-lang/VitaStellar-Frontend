@@ -8,9 +8,9 @@ interface BeforeInstallPromptEvent extends Event {
 }
 
 const STORAGE_KEYS = {
-  VISITS: "uzima-pwa-visits",
-  DISMISSED_UNTIL: "uzima-pwa-dismissed-until",
-  HAS_INTERACTED: "uzima-pwa-has-interacted",
+  VISITS: "vitastellar-pwa-visits",
+  DISMISSED_UNTIL: "vitastellar-pwa-dismissed-until",
+  HAS_INTERACTED: "vitastellar-pwa-has-interacted",
 };
 
 const DISMISS_DURATION_DAYS = 7;

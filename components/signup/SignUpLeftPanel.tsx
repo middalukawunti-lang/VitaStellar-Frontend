@@ -69,7 +69,7 @@ export default function SignUpLeftPanel() {
         {/* Logo — same markup as Navbar for visual consistency */}
         <Link
           href="/"
-          aria-label="Go to Stellar Uzima homepage"
+          aria-label="Go to VitaStellar homepage"
           className="inline-flex items-center gap-2.5 mb-10 focus:outline-none focus:ring-2 focus:ring-gold/40 rounded-full"
         >
           {/* Gold star on terra circle — mirrors navigation.tsx logo */}
@@ -77,7 +77,7 @@ export default function SignUpLeftPanel() {
             ★
           </div>
           <span className="font-serif font-bold text-cream text-xl tracking-tight">
-            Stellar Uzima
+            VitaStellar
           </span>
         </Link>
 

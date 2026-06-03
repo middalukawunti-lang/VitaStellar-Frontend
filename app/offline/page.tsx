@@ -87,7 +87,7 @@ export default function OfflinePage() {
 
   useEffect(() => {
     // Last sync time
-    const stored = localStorage.getItem("uzima-last-sync");
+    const stored = localStorage.getItem("vitastellar-last-sync");
     if (stored) setLastSync(getRelativeTime(parseInt(stored, 10)));
 
     // Dynamically check which pages are in cache
@@ -113,7 +113,7 @@ export default function OfflinePage() {
             ★
           </div>
           <span className="font-serif font-bold text-[#1A1A1A] text-xl tracking-tight">
-            Stellar Uzima
+            VitaStellar
           </span>
         </Link>
       </header>
@@ -185,7 +185,7 @@ export default function OfflinePage() {
       {/* Footer */}
       <footer className="px-6 py-5 text-center">
         <p className="text-xs text-[#6B7280]">
-          Stellar Uzima works offline to serve communities with limited connectivity
+          VitaStellar works offline to serve communities with limited connectivity
         </p>
       </footer>
     </div>

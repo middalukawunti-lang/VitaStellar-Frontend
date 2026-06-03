@@ -8,7 +8,7 @@ const SignUpForm = dynamic(() => import("@/components/signup/SignUpForm"), {
 });
 
 export const metadata: Metadata = {
-  title: "Create Account — Stellar Uzima",
+  title: "Create Account — VitaStellar",
   description:
     "Join 25,000+ Africans earning XLM rewards for health, wealth, and community. Sign up free today.",
 };
@@ -18,7 +18,7 @@ export default function SignUpPage() {
     <main className="min-h-screen bg-white flex items-stretch">
       <div className="w-full lg:grid lg:grid-cols-[40%_60%]">
         <aside
-          aria-label="Stellar Uzima brand information"
+          aria-label="VitaStellar brand information"
           className="hidden lg:block lg:sticky lg:top-0 lg:h-screen"
         >
           <SignUpLeftPanel />

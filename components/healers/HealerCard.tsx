@@ -209,7 +209,7 @@ export const HealerCard = memo(function HealerCard({
             </Badge>
           </TooltipTrigger>
           <TooltipContent side="top" sideOffset={4}>
-            Verified by Stellar Uzima for experience, community reputation,
+            Verified by VitaStellar for experience, community reputation,
             and safe traditional practice.
           </TooltipContent>
         </Tooltip>

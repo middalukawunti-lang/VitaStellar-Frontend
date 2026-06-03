@@ -23,7 +23,7 @@ export const socialLinks = [
   },
   {
     icon: Github,
-    link: "https://github.com/Stellar-Uzima",
+    link: "https://github.com/VitaStellar",
     title: "GitHub",
   },
 ];

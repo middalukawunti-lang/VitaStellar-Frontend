@@ -119,7 +119,7 @@ export default function HealerProfilePage() {
                     {healer.isVerified ? (
                       <Badge className="rounded-full border-emerald-300/25 bg-emerald-300/15 px-3 py-1 text-[11px] text-emerald-100">
                         <CheckCircle2 className="h-3.5 w-3.5" />
-                        Verified by Stellar Uzima
+                        Verified by VitaStellar
                       </Badge>
                     ) : null}
                   </div>

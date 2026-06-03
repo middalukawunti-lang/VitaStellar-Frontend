@@ -2,7 +2,7 @@
 
 ## What I've Built
 
-✅ Complete PWA support for Stellar Uzima
+✅ Complete PWA support for VitaStellar
 ✅ Offline task submission with IndexedDB queue
 ✅ Auto-sync when connection restored
 ✅ Install prompts for mobile and desktop

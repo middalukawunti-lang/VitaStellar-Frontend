@@ -1,7 +1,7 @@
 "use client";
 
 // IndexedDB wrapper for offline task queue management
-const DB_NAME = "uzima-offline-db";
+const DB_NAME = "vitastellar-offline-db";
 const DB_VERSION = 1;
 const TASK_STORE = "pending-tasks";
 

@@ -232,7 +232,7 @@ export default function XLMRewardsPage() {
         <section className="px-20 py-20 bg-gradient-to-r from-terra to-gold">
           <div className="max-w-4xl mx-auto text-center text-white">
             <h2 className="font-serif text-4xl font-bold mb-4">Start Earning Today</h2>
-            <p className="text-lg mb-8 text-white/90">Join thousands of Africans earning real value through Stellar Uzima. Transform your health, wealth, and community while building financial independence.</p>
+            <p className="text-lg mb-8 text-white/90">Join thousands of Africans earning real value through VitaStellar. Transform your health, wealth, and community while building financial independence.</p>
             <button className="bg-white text-earth font-bold px-8 py-4 rounded-full hover:bg-cream transition-all duration-300 hover:shadow-lg text-lg">
               Join Now
             </button>

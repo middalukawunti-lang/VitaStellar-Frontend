@@ -28,7 +28,7 @@ export default function LanguageSelector() {
 
   // Load saved language on mount
   useEffect(() => {
-    const savedCode = localStorage.getItem("uzima-lang");
+    const savedCode = localStorage.getItem("vitastellar-lang");
     if (savedCode) {
       const found = LANGUAGES.find((l) => l.code === savedCode);
       if (found) setSelectedLang(found);
@@ -65,7 +65,7 @@ export default function LanguageSelector() {
   const handleSelect = (lang: Language) => {
     setSelectedLang(lang);
     setIsOpen(false);
-    localStorage.setItem("uzima-lang", lang.code);
+    localStorage.setItem("vitastellar-lang", lang.code);
     document.documentElement.dir = lang.dir || "ltr";
     document.documentElement.lang = lang.code;
   };

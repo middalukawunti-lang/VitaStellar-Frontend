@@ -2,10 +2,12 @@
 
 import * as React from 'react';
 import { ThemeProvider } from 'next-themes';
+import { runStorageMigration } from '@/lib/storage-migration';
 
 export function Providers({ children }: { children: React.ReactNode }) {
     React.useEffect(() => {
-        localStorage.setItem('uzima-last-sync', Date.now().toString());
+        runStorageMigration();
+        localStorage.setItem('vitastellar-last-sync', Date.now().toString());
     }, []);
 
     return (

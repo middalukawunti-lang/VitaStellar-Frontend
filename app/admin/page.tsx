@@ -9,8 +9,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { LayoutDashboard, Users, CheckSquare, ShieldCheck } from "lucide-react";
 
 export const metadata = {
-  title: "Admin Dashboard | Stellar Uzima",
-  description: "Platform management for Stellar Uzima.",
+  title: "Admin Dashboard | VitaStellar",
+  description: "Platform management for VitaStellar.",
 };
 
 export default function AdminPage() {

@@ -213,7 +213,7 @@ export function HealersDirectory({
                 Become a healer
               </p>
               <h2 className="font-serif text-xl sm:text-2xl font-bold">
-                Join the Stellar Uzima healer network
+                Join the VitaStellar healer network
               </h2>
               <p className="text-xs sm:text-sm text-cream/80 max-w-xl">
                 Are you a traditional healer who wants to serve more people

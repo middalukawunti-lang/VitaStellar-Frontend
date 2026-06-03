@@ -48,7 +48,7 @@ const config: Config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // Stellar Uzima Brand Colors
+        // VitaStellar Brand Colors
         earth: "var(--earth)",
         terra: "var(--terra)",
         amber: "var(--amber)",

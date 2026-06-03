@@ -24,7 +24,7 @@ self.addEventListener('push', (event) => {
       data = { title: text ?? 'Notification', body: '' };
     }
 
-    const { type, title = 'Stellar Uzima', body = '', url } = data;
+    const { type, title = 'VitaStellar', body = '', url } = data;
 
     let mappedUrl = '/dashboard';
     if (type === 'TASK_REMINDER') {

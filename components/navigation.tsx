@@ -228,7 +228,7 @@ function MobileDrawer({
               ★
             </div>
             <span className="font-serif text-lg font-bold tracking-tight text-foreground">
-              Stellar Uzima
+              VitaStellar
             </span>
           </Link>
 
@@ -459,7 +459,7 @@ export default function Navbar() {
   const toggleDrawer = useCallback(() => setDrawerOpen((prev) => !prev), []);
 
   return (
-    <>
+    <NotificationProvider>
       <nav
         ref={navRef}
         className={`fixed left-0 right-0 z-30 flex items-center justify-between px-6 md:px-12 bg-cream/94 backdrop-blur-md border-b border-terra/10 transition-all duration-300 ease-out ${
@@ -475,7 +475,7 @@ export default function Navbar() {
             ★
           </div>
           <span className="font-serif font-bold text-foreground text-xl tracking-tight">
-            Stellar Uzima
+            VitaStellar
           </span>
         </Link>
 
@@ -501,46 +501,29 @@ export default function Navbar() {
             );
           })}
 
-          <ul className="hidden list-none items-center gap-8 md:flex">
-            {NAV_LINKS.map((link) => {
-              const active = link.href.startsWith("#")
-                ? `#${activeSection}` === link.href
-                : pathname === link.href;
-
-              return (
-                <li key={link.href}>
-                  <a
-                    href={link.href}
-                    className={`relative text-sm font-medium transition-all duration-200 ${
-                      active ? "text-terra" : "text-muted-foreground hover:text-terra"
-                    }`}
+          <li>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="flex cursor-pointer items-center gap-1 rounded text-sm font-medium text-muted-foreground transition-colors hover:text-terra focus:outline-none focus:ring-2 focus:ring-terra/30">
+                  Services
+                  <svg
+                    width="12"
+                    height="12"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   >
-                    {link.label}
-                    {active && (
-                      <span className="absolute left-0 right-0 -bottom-1 h-0.5 rounded-full bg-terra" />
-                    )}
-                  </a>
-                </li>
-              );
-            })}
-
-            <li>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <button className="flex cursor-pointer items-center gap-1 rounded text-sm font-medium text-muted-foreground transition-colors hover:text-terra focus:outline-none focus:ring-2 focus:ring-terra/30">
-                    Services
-                    <svg
-                      width="12"
-                      height="12"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      {link.label}
-                    </Link>
+                    <polyline points="6 9 12 15 18 9" />
+                  </svg>
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                {SERVICE_LINKS.map((link) => (
+                  <DropdownMenuItem key={link.href} asChild>
+                    <Link href={link.href}>{link.label}</Link>
                   </DropdownMenuItem>
                 ))}
               </DropdownMenuContent>
@@ -569,23 +552,16 @@ export default function Navbar() {
               href="/signin"
               className="text-foreground font-medium text-sm hover:text-terra transition-colors px-2"
             >
-              Connect wallet
-            </button>
-            {!isLoggedIn && (
-              <Link
-                href="/signin"
-                className="px-2 text-sm font-medium text-foreground transition-colors hover:text-terra"
-              >
-                Sign In
-              </Link>
-            )}
-            <a
-              href="/signup"
-              className="rounded-full bg-terra px-5 py-2 text-sm font-medium text-white transition-all hover:bg-earth hover:shadow-lg hover:shadow-terra/30"
-            >
-              Join Now
-            </a>
-          </div>
+              Sign In
+            </Link>
+          )}
+          <a
+            href="/signup"
+            className="rounded-full bg-terra px-5 py-2 text-sm font-medium text-white transition-all hover:bg-earth hover:shadow-lg hover:shadow-terra/30"
+          >
+            Join Now
+          </a>
+        </div>
 
         {/* ── Mobile Actions (Bell + Hamburger) ── */}
         <div className="flex items-center gap-2 lg:hidden">
@@ -605,23 +581,12 @@ export default function Navbar() {
         onOpenWallet={() => setWalletModalOpen(true)}
       />
 
-        <MobileDrawer
-          isOpen={drawerOpen}
-          onClose={closeDrawer}
-          pathname={pathname}
-          isLoggedIn={isLoggedIn}
-          xlmBalance={xlmBalance}
-          activeSection={activeSection}
-          onOpenWallet={() => setWalletModalOpen(true)}
+      {walletModalOpen && (
+        <WalletConnectModal
+          open={walletModalOpen}
+          onOpenChange={setWalletModalOpen}
         />
-
-        {walletModalOpen && (
-          <WalletConnectModal
-            open={walletModalOpen}
-            onOpenChange={setWalletModalOpen}
-          />
-        )}
-      </>
+      )}
     </NotificationProvider>
   );
 }

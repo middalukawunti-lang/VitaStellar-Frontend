@@ -17,7 +17,7 @@ interface ErrorMessageProps {
 }
 
 /**
- * ErrorMessage — reusable, accessible error banner for Stellar Uzima.
+ * ErrorMessage — reusable, accessible error banner for VitaStellar.
  *
  * Design:
  *  - Red-tinted background with a left terracotta accent border

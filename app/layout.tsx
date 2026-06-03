@@ -24,15 +24,15 @@ const fraunces = Fraunces({
 
 
 export const metadata: Metadata = {
-  title: "Stellar Uzima — Your Health. Your Wealth. Your Community.",
+  title: "VitaStellar — Decentralized Health & Wellness Powered by Stellar",
   description:
-    "Earn, learn, and grow with Stellar Uzima. Transform your health, wealth, and community with blockchain-powered rewards.",
+    "Earn, learn, and grow with VitaStellar. Transform your health, wealth, and community with blockchain-powered rewards.",
   generator: "v0.app",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Stellar Uzima",
+    title: "VitaStellar",
   },
   icons: {
     icon: [
@@ -67,7 +67,7 @@ export default function RootLayout({
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="Stellar Uzima" />
+        <meta name="apple-mobile-web-app-title" content="VitaStellar" />
         <link rel="apple-touch-icon" href="/apple-icon.png" />
 
         {/* --- #198: Anti-Flash Theme Script --- */}

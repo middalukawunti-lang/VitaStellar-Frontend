@@ -77,11 +77,11 @@ export default function StreakCelebrationModal({
 
   const handleShare = async () => {
     if (!milestone) return;
-    const text = `${milestone}-Day Streak on Stellar Uzima! I earned +${BONUS_BY_MILESTONE[milestone].toFixed(
+    const text = `${milestone}-Day Streak on VitaStellar! I earned +${BONUS_BY_MILESTONE[milestone].toFixed(
       1,
     )} XLM.`;
     const shareData = {
-      title: 'Stellar Uzima Streak',
+      title: 'VitaStellar Streak',
       text,
       url: typeof window !== 'undefined' ? window.location.href : '',
     };
