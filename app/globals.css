@@ -144,7 +144,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    /* --- #198: Smooth border and outline transitions --- */
+    /* --- #198: Smooth border, outline, and theme transitions --- */
     @apply border-border outline-ring/50 transition-colors duration-300 ease-in-out;
   }
 
@@ -155,9 +155,10 @@
   }
 
   body {
-    /* --- #198: Global background and text transitions --- */
-    @apply bg-background text-foreground font-sans transition-colors duration-300 ease-in-out;
+    /* --- #198: Global background, text transitions, and nav offset --- */
+    @apply bg-background text-foreground font-sans;
     overflow-x: hidden;
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out, border-color 0.3s ease-in-out, padding-top 0.2s ease;
   }
 }
 
@@ -174,29 +175,6 @@
   }
   .animate-task-confetti {
     animation: task-confetti-burst 0.7s ease-out forwards;
-  }
-}
-
-@layer base {
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-
-  html {
-    scroll-behavior: smooth;
-  }
-
-  body {
-    @apply bg-background text-foreground font-sans;
-    overflow-x: hidden;
-   
-    transition: padding-top 0.2s ease;
-  }
-
-  * {
-    @apply border-border;
   }
 }
 
